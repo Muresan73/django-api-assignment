@@ -44,7 +44,7 @@ def increaseVote(reques, id):
 def decreaseVote(request, id):
     try:
         selectedLink = Link.objects.get(id=id)
-        selectedLink.upvotes -= 1
+        selectedLink.downvotes += 1
         selectedLink.save()
         return HttpResponse(status=200)
     except ObjectDoesNotExist:

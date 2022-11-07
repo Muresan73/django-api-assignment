@@ -6,7 +6,7 @@ class Link(models.Model):
     url = models.SlugField(unique=True)
     upvotes = models.PositiveIntegerField(default=0)
     downvotes = models.PositiveIntegerField(default=0)
-    score = models.PositiveIntegerField(default=0)
+    score = models.IntegerField(default=0)
 
     @property
     def get_score(self):

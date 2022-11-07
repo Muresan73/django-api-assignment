@@ -7,15 +7,15 @@ class PostTestCase(TestCase):
     client = Client()
 
     def test_add_url_to_db(self):
-        response = self.client.post('/api/links', {"url": "https://www.yahoo.com/"})
+        response = self.client.post('/api/links/', {"url": "https://www.yahoo.com/"})
         self.assertEqual(response.status_code, 201)
         url = Link.objects.get(url="https://www.yahoo.com/")
         self.assertTrue(url.created - datetime.now(timezone.utc) < timedelta(minutes=1))
 
     def test_error_on_duplication(self):
-        response = self.client.post('/api/links', {"url": "https://www.yahoo.com/"})
+        response = self.client.post('/api/links/', {"url": "https://www.yahoo.com/"})
         self.assertEqual(response.status_code, 201)
-        response = self.client.post('/api/links', {"url": "https://www.yahoo.com/"})
+        response = self.client.post('/api/links/', {"url": "https://www.yahoo.com/"})
         self.assertEqual(response.status_code, 409)
 
 
@@ -26,7 +26,7 @@ class GetTestCase(TestCase):
         Link.objects.create(url='a')
         Link.objects.create(url='b')
         Link.objects.create(url='c')
-        response = self.client.get('/api/links')
+        response = self.client.get('/api/links/')
         data = response.json()
         self.assertEqual(response.status_code, 200)
         self.assertDictContainsSubset({'id': 1, 'url': 'a', 'upvotes': 0, 'downvotes': 0, 'score': 0}, data[0])

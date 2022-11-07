@@ -1,9 +1,8 @@
-from django.core.exceptions import ValidationError
-from django.http import HttpResponse, JsonResponse, HttpRequest
+from django.core.exceptions import ValidationError, ObjectDoesNotExist
+from django.http import HttpResponse, HttpRequest, JsonResponse
 from django.http import Http404
 from django.views.decorators.http import require_http_methods
 from link_aggregator.models import Link
-from django.core.exceptions import ObjectDoesNotExist
 
 
 @require_http_methods(["GET", "POST"])
@@ -25,8 +24,9 @@ def handleLink(request: HttpRequest):
         return HttpResponse(status=201)
 
     if request.method == 'GET':
-        links = Link.objects.all()
-        return JsonResponse(links)
+        links = Link.objects.values()
+        links_json = list(links)
+        return JsonResponse(links_json, safe=False)
 
     return HttpResponse(status=400)
 
